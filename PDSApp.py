@@ -18,8 +18,8 @@ def getPort():
     port = 3344
     print 'Default port: ', str(port)
 
-    answer = raw_input('Change? (y\\n)\n')
-    if answer == 'y':
+    change = raw_input('Change? (y\\n)\n')
+    if change == 'y':
         newPort = raw_input('Input correct port: ')
         if newPort != -1:
             return  newPort
@@ -29,7 +29,14 @@ def getIP():
     ipAddress = None
     hostname = socket.gethostname()
     ipAddress = socket.gethostbyname(hostname)
-    print ipAddress
+    print 'Default IP Adress: ', ipAddress
+    change = raw_input('Change? (y\\n)\n')
+    if change == 'y':
+        newIpAddress = raw_input('Input correct IP: ')
+        if newIpAddress != None:
+            return newIpAddress
+    return ipAddress
 
 
-if __name__ == "__main__": main()
+if __name__ == "__main__":
+    main()
