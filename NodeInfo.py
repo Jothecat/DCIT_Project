@@ -6,10 +6,11 @@ Created on Fri Dec 11 20:24:19 2015
 """
 
 class NodeInfo():
-    def __init__(self,port,ip,activeNodes = [],isOnline = False,isRunning = True):
 
+    def __init__(self,port,ip,activeNodes=[],isOnline = False,isRunning = True):
         self.__ip = ip
         self.__port = port
+        self.activeNodes = activeNodes
         self.parentNodeAddr = ""
     
     def getInstance(self):
@@ -50,8 +51,12 @@ class NodeInfo():
         return self.activeNodes
     
     def addActiveNode(self, nodeAddr):
-        if nodeAddr in self.activeNodes:
-            return False
+        if self.activeNodes != []:
+            if nodeAddr in self.activeNodes:
+                return False
+            else:
+                self.activeNodes.append(nodeAddr)
+                return True
         else:
             self.activeNodes.append(nodeAddr)
             return True

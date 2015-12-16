@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Created on Wed Dec 16 17:08:53 2015
 
@@ -15,13 +14,11 @@ class Client(threading.Thread):
         self.nodeInfo = NodeInfo(port,ip)
         self.nodeInfo.setRunning(True)
         self.nodeInfo.setNodeAddr(ip,port)
-        self.nodeInfo.addActiveNode(ip+":"+port)
+        self.nodeInfo.addActiveNode(ip + ":" + str(port))
         
         
     def stopClient(self):      
         self.nodeInfo.setRunning(False)
-    
-#    def run(self):
         
     
     def joinRPC(self,url):
