@@ -11,6 +11,7 @@ class NodeInfo():
         self.__ip = ip
         self.__port = port
         self.activeNodes = activeNodes
+        self.parentNodeAddr = ""
     
     def getInstance(self):
         return self
@@ -82,9 +83,18 @@ class NodeInfo():
         print "Node"+ nodeAddr+"has been deleted"
         return self.delActiveNode(nodeAddr)
     
+    def getParentNodeAddr(self):
+        return self.parentNodeAddr
+    
+    def setParentNodeAddr(self, parentNodeAddr):
+        self.parentNodeAddr = parentNodeAddr
+    
+    
+    
+    
     def test(inp):
         print inp
         
     
-        
+ 
     
