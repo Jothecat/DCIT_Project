@@ -6,11 +6,18 @@ Created on Fri Dec 11 22:34:45 2015
 """
 
 import socket
-
+from Client import Client
+from Server import Server
+from Node import Node
+from threading import Thread
 
 def main():
     port = getPort()
-    getIP()
+    client = Client(getIP(), port)
+    server = Server(port)
+    readerThread = Thread(target = Node(client, server), args = [])
+    readerThread.start()
+    #getIP()
 
 
 def getPort():
@@ -35,6 +42,7 @@ def getIP():
         if newIpAddress != None:
             return newIpAddress
     return ipAddress
+
 
 
 if __name__ == "__main__":

@@ -4,15 +4,15 @@ Created on Wed Dec 16 17:55:04 2015
 
 @author: Ying
 """
-import threading
+from threading import Thread
 from NodeInfo import NodeInfo
 
-class Node(threading.Thread):
+class Node():
    def __init__(self,client, server):
        self.client = client
        self.server = server
        
-       serverThread = server
+       serverThread = Thread(target = server, args = [])
        serverThread.start()
        
        self.client.run()

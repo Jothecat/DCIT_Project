@@ -14,7 +14,7 @@ class Client(threading.Thread):
         self.nodeInfo = NodeInfo(port,ip)
         self.nodeInfo.setRunning(True)
         self.nodeInfo.setNodeAddr(ip,port)
-        self.nodeInfo.addActiveNode(ip+":"+port)
+        self.nodeInfo.addActiveNode(ip + ":" + str(port))
         
     def stopClient():
         nodeInfo = NodeInfo.getInstance()
