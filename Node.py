@@ -8,14 +8,21 @@ from threading import Thread
 from NodeInfo import NodeInfo
 
 class Node(Thread):
+
    def __init__(self,client, server):
        self.client = client
        self.server = server
-       
+
        serverThread = Thread(target = server, args = [])
        serverThread.start()
+       serverThread.join()
+
+       print 'server started'
        
        self.client.run()
+
+   def __call__(self):
+        pass
        
    def run(self):
        isRunning = True

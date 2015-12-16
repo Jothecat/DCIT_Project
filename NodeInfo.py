@@ -94,7 +94,3 @@ class NodeInfo():
     
     def test(inp):
         print inp
-        
-    
- 
-    
