@@ -7,6 +7,7 @@ Created on Fri Dec 11 22:34:45 2015
 
 import socket
 
+
 def main():
     port = getPort()
     getIP()
