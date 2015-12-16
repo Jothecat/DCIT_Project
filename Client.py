@@ -6,16 +6,22 @@ Created on Wed Dec 16 17:08:53 2015
 import xmlrpclib
 from NodeInfo import NodeInfo
 from Node import Node
-import threading
+from threading import Thread
 
 
-class Client(threading.Thread):
+class Client(Thread):
+
+    nodeInfo = NodeInfo(3355, '127.0.0.1')
+
     def __init__(self,ip,port):
         self.nodeInfo = NodeInfo(port,ip)
+        nodeInfo = NodeInfo(port,ip)
         self.nodeInfo.setRunning(True)
         self.nodeInfo.setNodeAddr(ip,port)
         self.nodeInfo.addActiveNode(ip + ":" + str(port))
-        
+
+    def getNodeInfo(self):
+        return self.nodeInfo
         
     def stopClient(self):      
         self.nodeInfo.setRunning(False)
@@ -67,4 +73,13 @@ class Client(threading.Thread):
                     self.signOffRPC("http://"+nodeAddr+"/xmlrpc")
             
             self.nodeInfo.clearActiveNodes()
-                
+
+    def run(self):
+        class Runnable(Thread):
+            def run(self):
+                nodeInfo = Client.nodeInfo
+
+                while nodeInfo.isRunning():
+                    if nodeInfo.isOnline():
+                        pass
+        Runnable().start()

@@ -7,7 +7,7 @@ Created on Wed Dec 16 17:55:04 2015
 from threading import Thread
 from NodeInfo import NodeInfo
 
-class Node():
+class Node(Thread):
    def __init__(self,client, server):
        self.client = client
        self.server = server
