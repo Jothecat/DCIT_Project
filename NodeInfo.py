@@ -4,17 +4,27 @@ Created on Fri Dec 11 20:24:19 2015
 
 @author: Ying
 """
+class Singleton(type):  
+    def __init__(cls, name, bases, dict):  
+        super(Singleton, cls).__init__(name, bases, dict)  
+        cls._instance = None  
+    def __call__(cls, *args, **kw):  
+        if cls._instance is None:  
+            cls._instance = super(Singleton, cls).__call__(*args, **kw)  
+        return cls._instance  
 
-class NodeInfo():
 
-    def __init__(self,port,ip,activeNodes=[],isOnline = False,isRunning = True):
+class NodeInfo(object):
+    __metaclass__ = Singleton
+    
+    def __init__(self,port,ip,isOnline = False,isRunning = True):
         self.__ip = ip
         self.__port = port
-        self.activeNodes = activeNodes
+        self.activeNodes = []
         self.parentNodeAddr = ""
     
-    def getInstance(self):
-        return self
+    #def getInstance(self):
+        #return self
         
     def getIP(self):
         return self.__ip
@@ -33,7 +43,7 @@ class NodeInfo():
         self.__port = newport
     
     def getNodeAddrStr(self):
-        return self.__ip + ":" +self.__port
+        return self.__ip + ":" +str(self.__port)
         
     def isRunning(self):
         return self.isRunning
@@ -73,25 +83,16 @@ class NodeInfo():
     
     def clearActiveNodes(self):
         self.activeNodes = []
-        self.activeNodes.append(self.ip +":" +self.port)
+        self.activeNodes.append(self.__ip +":" +str(self.__port))
     
-    def add(self, nodeAddr):
-        print "Node"+ nodeAddr+"has been added"
-        return self.addActiveNode(nodeAddr)
-        
-    def delete(self, nodeAddr):
-        print "Node"+ nodeAddr+"has been deleted"
-        return self.delActiveNode(nodeAddr)
+
     
     def getParentNodeAddr(self):
         return self.parentNodeAddr
     
     def setParentNodeAddr(self, parentNodeAddr):
         self.parentNodeAddr = parentNodeAddr
-    
-    
-    
-    
+
     def test(inp):
         print inp
         

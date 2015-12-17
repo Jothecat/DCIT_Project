@@ -7,15 +7,17 @@ Created on Wed Dec 16 17:55:04 2015
 from threading import Thread
 from NodeInfo import NodeInfo
 
-class Node():
-   def __init__(self,client, server):
+class Node(Thread):
+   def __init__(self,client,server):
+       Thread.__init__()
        self.client = client
        self.server = server
        
-       serverThread = Thread(target = server, args = [])
+       serverThread = server
        serverThread.start()
        
        self.client.run()
+
        
    def run(self):
        isRunning = True
@@ -27,7 +29,7 @@ class Node():
            elif (command == "signoff"):
                self.client.signOff()
            elif command == "stop":
-               nodeInfo = NodeInfo.getInstance()
+               nodeInfo = NodeInfo()
                self.client.signOff()
                nodeInfo.setRunning(False)
                isRunning = False

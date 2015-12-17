@@ -13,12 +13,12 @@ from threading import Thread
 
 def main():
     port = getPort()
-    client = Client(getIP(), port)
+    ip = getIP()
+    client = Client(ip, port)   
     server = Server(port)
-    readerThread = Thread(target = Node(client, server), args = [])
-    readerThread.start()
-    #getIP()
 
+    readerThread = Node(client,server)#Thread(target=Node(client, server),args = [])
+    readerThread.start()
 
 def getPort():
     port = 3344
@@ -26,7 +26,7 @@ def getPort():
 
     change = raw_input('Change? (y\\n)\n')
     if change == 'y':
-        newPort = raw_input('Input correct port: ')
+        newPort = int(raw_input('Input correct port: '))
         if newPort != -1:
             return  newPort
     return port
@@ -38,7 +38,7 @@ def getIP():
     print 'Default IP Adress: ', ipAddress
     change = raw_input('Change? (y\\n)\n')
     if change == 'y':
-        newIpAddress = raw_input('Input correct IP: ')
+        newIpAddress = str(raw_input('Input correct IP: '))
         if newIpAddress != None:
             return newIpAddress
     return ipAddress

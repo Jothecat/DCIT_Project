@@ -5,66 +5,81 @@ Created on Wed Dec 16 17:08:53 2015
 """
 import xmlrpclib
 from NodeInfo import NodeInfo
-from Node import Node
-import threading
+from threading import Thread
 
 
-class Client(threading.Thread):
+class Client(Thread):
+
     def __init__(self,ip,port):
-        self.nodeInfo = NodeInfo(port,ip)
-        self.nodeInfo.setRunning(True)
-        self.nodeInfo.setNodeAddr(ip,port)
-        self.nodeInfo.addActiveNode(ip + ":" + str(port))
+        nodeInfo = NodeInfo(port,ip)
+        nodeInfo.setRunning(True)
+        nodeInfo.setNodeAddr(ip,port)
+        nodeInfo.addActiveNode(ip + ":" + str(port))
+
         
-        
-    def stopClient(self):      
-        self.nodeInfo.setRunning(False)
+    def stopClient(self): 
+        nodeInfo = NodeInfo()
+        nodeInfo.setRunning(False)
         
     
     def joinRPC(self,url):
+        nodeInfo = NodeInfo()
         proxy = xmlrpclib.ServerProxy(url)
-        multicall = xmlrpclib.MultiCall(proxy)
-        params = self.nodeInfo.getNodeAddrStr()
-        multicall.add(params)
+        #multicall = xmlrpclib.MultiCall(proxy)
+        params = nodeInfo.getNodeAddrStr()
+        proxy.add(params)
         
     def signOffRPC(self,url):
+        nodeInfo = NodeInfo()
         proxy = xmlrpclib.ServerProxy(url)
-        multicall = xmlrpclib.MultiCall(proxy)
-        params = self.nodeInfo.getNodeAddrStr()
-        multicall.delete(params)
+        #multicall = xmlrpclib.MultiCall(proxy)
+        params = nodeInfo.getNodeAddrStr()
+        proxy.delete(params)
         
     def join(self):
-        if (self.nodeInfo.isOnline()):
-            ip = raw_input('Input IP to connect to')
-            port = raw_input('Input port to connect to')
-            self.nodeInfo.setParentNodeAddr(ip+":"+port)
+        nodeInfo = NodeInfo()
+        if (nodeInfo.isOnline()==False):
+            ip = raw_input('Input IP to connect to:')
+            port = raw_input('Input port to connect to:')
+            nodeInfo.setParentNodeAddr(ip+":"+str(port))
             
             proxy = xmlrpclib.ServerProxy("http://"+self.nodeInfo.getParentNodeAddr()+"/xmlrpc")
-            multicall = xmlrpclib.MultiCall(proxy)
-            activeNodes = multicall.getActiveNodes()
+            #multicall = xmlrpclib.MultiCall(proxy)
+            activeNodes = proxy.getActiveNodes()
             
-            for node in activeNodes:
-                self.nodeInfo.addActiveNode(node)
+            if(activeNodes != []):
+                for node in activeNodes:
+                    nodeInfo.addActiveNode(node)
             
-            self.nodeInfo.setOnline = True
+            nodeInfo.setOnline = True
             
-            for nodeAddr in self.nodeInfo.getActiveNodes():
-                if nodeAddr != self.nodeInfo.getNodeAddrStr():
+            for nodeAddr in nodeInfo.getActiveNodes():
+                if nodeAddr != nodeInfo.getNodeAddrStr():
                     self.joinRPC("http://" + nodeAddr + "/xmlrpc")
+                    print "successfully joined"
             return 0
         else:
             print "Something is wrong, node may already exist"
             return -1
     
     def signOff(self):
-        currentNodeAddr = self.nodeInfo.getNodeAddrStr()
+        nodeInfo = NodeInfo()
+        currentNodeAddr = nodeInfo.getNodeAddrStr()
         
-        if self.nodeInfo.isOnline():
-            self.nodeInfo.setOnline = False
+        if nodeInfo.isOnline():
+            nodeInfo.setOnline = False
             
-            for nodeAddr in self.nodeInfo.getActiveNodes():
+            for nodeAddr in nodeInfo.getActiveNodes():
                 if nodeAddr != currentNodeAddr:
                     self.signOffRPC("http://"+nodeAddr+"/xmlrpc")
             
-            self.nodeInfo.clearActiveNodes()
-                
+            nodeInfo.clearActiveNodes()
+
+    def run(self):
+        class Runnable(Thread):
+            def run(self):
+                nodeInfo = NodeInfo()
+                #while nodeInfo.isRunning():
+                    #if nodeInfo.isOnline():
+                        #pass
+        Runnable().start()
