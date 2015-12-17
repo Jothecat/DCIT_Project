@@ -15,7 +15,7 @@ def main():
     port = getPort()
     ip = getIP()
     client = Client(ip, port)   
-    server = Server(port)
+    server = Server(ip, port)
 
     node = Node(client,server)
     node.run()

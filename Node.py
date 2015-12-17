@@ -35,6 +35,7 @@ class Node(Thread):
                self.client.signOff()
                nodeInfo.setRunning(False)
                isRunning = False
+               
                break
            else:
                print "Bad Input, Try join, signoff or stop"

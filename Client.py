@@ -37,25 +37,26 @@ class Client(Thread):
         proxy.delete(params)
         
     def join(self):
-        nodeInfo = NodeInfo()
-        if (nodeInfo.isOnline()==False):
+        nodeInfo = NodeInfo()   
+        
+        if (nodeInfo.isOnline==False):
             ip = raw_input('Input IP to connect to:')
             port = raw_input('Input port to connect to:')
             nodeInfo.setParentNodeAddr(ip+":"+str(port))
             
-            proxy = xmlrpclib.ServerProxy("http://"+self.nodeInfo.getParentNodeAddr()+"/xmlrpc")
-            #multicall = xmlrpclib.MultiCall(proxy)
+            proxy = xmlrpclib.ServerProxy("http://"+nodeInfo.parentNodeAddr+"/")
             activeNodes = proxy.getActiveNodes()
+            print activeNodes
             
             if(activeNodes != []):
                 for node in activeNodes:
                     nodeInfo.addActiveNode(node)
             
-            nodeInfo.setOnline = True
+            nodeInfo.setOnline(True)
             
             for nodeAddr in nodeInfo.getActiveNodes():
                 if nodeAddr != nodeInfo.getNodeAddrStr():
-                    self.joinRPC("http://" + nodeAddr + "/xmlrpc")
+                    self.joinRPC("http://" + nodeAddr + "/")
                     print "successfully joined"
             return 0
         else:
@@ -66,14 +67,16 @@ class Client(Thread):
         nodeInfo = NodeInfo()
         currentNodeAddr = nodeInfo.getNodeAddrStr()
         
-        if nodeInfo.isOnline():
-            nodeInfo.setOnline = False
+        if nodeInfo.isOnline:
+            nodeInfo.setOnline(False)
+            print nodeInfo.getActiveNodes()
             
             for nodeAddr in nodeInfo.getActiveNodes():
                 if nodeAddr != currentNodeAddr:
-                    self.signOffRPC("http://"+nodeAddr+"/xmlrpc")
+                    self.signOffRPC("http://"+nodeAddr+"/")
             
             nodeInfo.clearActiveNodes()
+            print "successfully signed off"
 
     def run(self):
         class Runnable(Thread):
@@ -83,3 +86,5 @@ class Client(Thread):
                     #if nodeInfo.isOnline():
                         #pass
         Runnable().start()
+        
+    

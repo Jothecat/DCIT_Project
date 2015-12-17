@@ -17,15 +17,14 @@ class Singleton(type):
 class NodeInfo(object):
     __metaclass__ = Singleton
     
-    def __init__(self,port,ip,isOnline = False,isRunning = True):
+    def __init__(self,port,ip):
         self.__ip = ip
         self.__port = port
+        self.isOnline = False
+        self.isRunning = True
         self.activeNodes = []
         self.parentNodeAddr = ""
     
-    #def getInstance(self):
-        #return self
-        
     def getIP(self):
         return self.__ip
         
@@ -41,6 +40,7 @@ class NodeInfo(object):
     def setNodeAddr(self,newip, newport):
         self.__ip = newip
         self.__port = newport
+    
     
     def getNodeAddrStr(self):
         return self.__ip + ":" +str(self.__port)
@@ -93,8 +93,8 @@ class NodeInfo(object):
     def setParentNodeAddr(self, parentNodeAddr):
         self.parentNodeAddr = parentNodeAddr
 
-    def test(inp):
-        print inp
+    def test():
+        print "good"
         
     
  

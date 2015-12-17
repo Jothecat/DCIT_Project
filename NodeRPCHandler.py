@@ -21,3 +21,6 @@ class NodeRPCHandler:
     def getActiveNodes():
         nodeInfo = NodeInfo()
         return nodeInfo.activeNodes
+    
+    def test():
+        print "test succeeded"
