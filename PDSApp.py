@@ -17,8 +17,8 @@ def main():
     client = Client(ip, port)   
     server = Server(port)
 
-    readerThread = Node(client,server)#Thread(target=Node(client, server),args = [])
-    readerThread.start()
+    node = Node(client,server)
+    node.run()
 
 def getPort():
     port = 3344

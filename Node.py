@@ -9,16 +9,18 @@ from NodeInfo import NodeInfo
 
 class Node(Thread):
    def __init__(self,client,server):
-       Thread.__init__()
+
        self.client = client
        self.server = server
+    
+       def startServer():
+           self.server.start()
        
-       serverThread = server
-       serverThread.start()
-       
+       serverThread = Thread(target = startServer, args = [])
+       serverThread.run()
        self.client.run()
-
        
+
    def run(self):
        isRunning = True
        
