@@ -13,9 +13,12 @@ class Node(Thread):
        self.client = client
        self.server = server
 
-       serverThread = Thread(target = server, args = [])
+       def startServer():
+           self.server.start()
+
+       serverThread = Thread(target = startServer, args = [])
        serverThread.start()
-       serverThread.join()
+       #serverThread.join()
 
        print 'server started'
        

@@ -43,7 +43,5 @@ def getIP():
             return newIpAddress
     return ipAddress
 
-
-
 if __name__ == "__main__":
     main()

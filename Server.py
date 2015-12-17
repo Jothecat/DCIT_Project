@@ -9,9 +9,12 @@ from SimpleXMLRPCServer import SimpleXMLRPCServer
 from NodeInfo import NodeInfo
 from threading import Thread
 
+
 class Server(Thread):
 
     def __init__(self, port):
+        print 'Server is initialized'
+        Thread.__init__(self)
         self.__port = port
         self.webServer = SimpleXMLRPCServer(("localhost", self.__port))
 
@@ -26,6 +29,5 @@ class Server(Thread):
         print 'server run forever'
         server = self.webServer
         server.register_introspection_functions()
-        
         server.register_instance(NodeInfo())
         server.serve_forever()

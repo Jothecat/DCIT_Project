@@ -78,7 +78,6 @@ class Client(Thread):
         class Runnable(Thread):
             def run(self):
                 nodeInfo = Client.nodeInfo
-
                 while nodeInfo.isRunning():
                     if nodeInfo.isOnline():
                         pass
